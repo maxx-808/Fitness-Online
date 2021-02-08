@@ -10,5 +10,32 @@ module.exports = (app) => {
       });
   });
 
-  app.put("/api/workouts/:id");
+  app.put("/api/workouts/:id", (req, res) => {
+    db.Workout.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { exercises: req.body },
+      },
+      { new: true, runValidators: true }
+    )
+      .then((data) => res.json(data))
+      .catch((err) => {
+        console.log("api/workouts/:id err: ", err);
+      });
+  });
+
+  app.get("/api/workouts/range", (req, res) => {
+    db.Workout.find({})
+      .limit(7)
+      .then((data) => res.json(data))
+      .catch((err) => {
+        console.log("api/workouts/range err: ", err);
+      });
+  });
+
+  app.get("/api/workouts", (req, res) => {
+    db.Workout.find({})
+      .then((data) => res.json(data))
+      .catch((err) => console.log("api/workouts get err: ", err));
+  });
 };
