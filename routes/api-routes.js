@@ -19,7 +19,7 @@ module.exports = (app) => {
       {
         $push: { exercises: req.body },
       },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then((data) => res.json(data))
       .catch((err) => {
